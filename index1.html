@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    .td {
+        width: 60px;
+        height: 60px;
+        font-size: 36;
+        text-align: center;
+        position: absolute;
+        padding: 7px;
+    }
+
+    #button1 {
+        position: absolute;
+        top: 150px;
+        left: 10px;
+        width: 120px;
+        height: 30px;
+    }
+
+    #Det {
+        position: relative;
+        height: 260px;
+        background-color: yellow;
+    }
+
+    #answer {
+        position: absolute;
+        top: 190px;
+        left: 60px;
+        font-size: 36px;
+        color: violet;
+    }
+
+</style>
+</head>
+<body onload="loadPage()">
+<div id="Det" style="width: 360px;">
+    <input type="text" class="td" style="top: 10px; left: 10px;" value="0" id="X1" onclick="this.select()">
+    <input type="text" class="td" style="top: 10px; left: 80px;" value="0" id="Y1" onclick="this.select()">
+
+
+    <input type="button" id="button1" value="Вычислить длину" onclick="det(); save();">
+    <input type="button" id="button2" value="Очистить cookie" onclick="det(); save();">
+    <span id="answer">Ответ</span>    
+
+</div>
+</body>
+</html>
+
+<script>
+    function det() {
+        var x1, y1, opr;
+        x1 = parseInt (document.getElementById("X1").value);
+        //... и тд.
+        y1 = parseInt (document.getElementById("Y1").value);
+
+        //a21 = parseInt (document.getElementById("S21").value);
+        //a22 = parseInt (document.getElementById("S22").value);
+
+        opr = Math.sqrt((x1 * x1) + (y1 * y1));
+        //alert(opr);
+        document.getElementById("answer").innerHTML = String(opr);
+        document.cookie = "username=Вася; expires=15/04/2021 00:00:00";
+        set_cookie ("X1", x1);
+        set_cookie ("Y1", y1);
+        
+        delete_cookie ("X1", x1);
+        delete_cookie ("Y1", y1);
+    }
+    
+    function loadPage() {
+        // заполняем инпуты значениями из куков
+        var x = get_cookie (x1);
+        document.getElementById("X1").value = x;
+        var y = get_cookie ("Y1");
+        document.getElementById("Y1").value = y;
+        //alert(x);
+        alert( document.cookie );
+    }
+
+    function get_cookie ( cookie_name )
+    {
+    var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+    
+    if ( results )
+        return ( unescape ( results[2] ) );
+    else
+        return null;
+    }
+
+    function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
+    {
+    var cookie_string = name + "=" + escape ( value );
+    
+    if ( exp_y )
+    {
+        var expires = new Date ( exp_y, exp_m, exp_d );
+        cookie_string += "; expires=" + expires.toGMTString();
+    }
+    
+    if ( path )
+            cookie_string += "; path=" + escape ( path );
+    
+    if ( domain )
+            cookie_string += "; domain=" + escape ( domain );
+    
+    if ( secure )
+            cookie_string += "; secure";
+    
+    document.cookie = cookie_string;
+    }
+
+    function delete_cookie ( cookie_name )
+{
+    var cookie_date = new Date ( );  // Текущая дата и время
+    cookie_date.setTime ( cookie_date.getTime() - 1 );
+    document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
+}
+
+</script>
